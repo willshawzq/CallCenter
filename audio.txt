@@ -1,0 +1,30 @@
+Web端获取用户语音设备的getUserMedia方法是WebRTC的3个API接口之一。
+
+WebRTC是是“网络实时通信”（Web Real Time Communication）的缩写。它最初是为了解决浏览器上视频通话而提出的，即两个浏览器之间直接进行视频和音频的通信，不经过服务器。后来发展到除了音频和视频，还可以传输文字和其他数据。
+
+WebRTC主要让浏览器具备3个功能：
+	1.获取音频和视频（MediaStram即）
+	2.进行音频和视频通信（PRCPeerConnection）
+	3.进行任意数据的通信（PTCDataChannel）
+
+getUserMedia方法接受三个参数。
+
+navigator.getUserMedia({
+    video: true, 
+    audio: true
+}, onSuccess, onError);
+getUserMedia的第一个参数是一个对象，表示要获取哪些多媒体设备，上面的代码表示获取摄像头和麦克风;onSuccess是一个回调函数，在获取多媒体设备成功时调用；onError也是一个回调函数，在取多媒体设备失败时调用。
+
+通过浏览器捕获声音，需要借助Web Audio API。
+
+window.AudioContext = window.AudioContext ||
+                      window.webkitAudioContext;
+
+var context = new AudioContext();
+
+function onSuccess(stream) {
+    var audioInput = context.createMediaStreamSource(stream);
+    audioInput.connect(context.destination);
+}
+
+navigator.getUserMedia({audio:true}, onSuccess);

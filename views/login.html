@@ -1,0 +1,47 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title><%= title %></title>
+
+    <!-- Custom styles for this template -->
+    <link href="stylesheets/login.css" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="container">
+    <ul class="user-type">
+        <li class="current">管理员<span class="triangle-left hide"></span></li>
+        <li>客服<span class="triangle-left hide"></li>
+    </ul>
+    <form id="login"  action="/login" method="post">
+        <h1>admin</h1>
+        <div class="radio hide">
+            <label>
+                <input type="radio" name="usertype" value="admin" checked="true">管理员
+            </label>
+            <label>
+                <input type="radio" name="usertype" value="user">客服
+            </label>
+        </div>
+        <fieldset id="inputs">            
+            <input id="username" name="username"  type="text" placeholder="Username" required>   
+            <input id="password" name="password"  type="password" placeholder="Password" required>
+        </fieldset>
+        <fieldset id="actions" class="clear">
+            <input type="submit" id="submit" value="Log in">
+        </fieldset>
+    </form>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="javascripts/login.js"></script>
+
+</div> <!-- /container -->
+</body>
+</html>

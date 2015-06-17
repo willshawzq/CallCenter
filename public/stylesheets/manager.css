@@ -1,0 +1,110 @@
+body {
+    background-color: inherit;
+}
+.clearfix:after {
+    display: block;
+    content: "\0020";
+    clear: both;
+}
+.info-box{
+    display: inline-block;
+    margin-left: 2%;
+    margin-top: 10px;
+    width: 22.5%;
+    background-color: #fff;
+    border: 1px solid #0DBBBA;
+}
+.top-option {
+    width: 100%;
+    border-top: 2px solid #0DBBBA;
+}
+.title {
+    position: relative;
+    float: left;
+    color: #fff;
+    padding: 5px 10px;
+    background-color: #0DBBBA;
+}
+.title:after {
+    position: absolute;
+    display: inline-block;
+    content: "\0020";
+    width: 0;
+    height: 0;
+    top: 0;
+    right: -30px;
+    border-top: 28px solid #0DBBBA;
+    border-right: 30px solid transparent;
+}
+
+.top-option > i {
+    float: right;
+    color: #0DBBBA;
+    margin-right: 20px;
+    margin-top: 10px;
+}
+.top-option i:hover {
+    cursor: pointer;
+}
+.info-detail img {
+    float: left;
+    width: 40%;
+    padding: 0 10px;
+    margin: 10px 0;
+}
+.details {
+    float: left;
+    width: 50%;
+    padding-top: 15px;
+    color: #747474;
+}
+.details input {
+    width: 60%;
+    border: none;
+    border-bottom: 1px solid transparent;
+    outline: none;
+}
+.edit input {
+    border-bottom-color: #ddd;
+}
+.details div {
+    font-size: 16px;
+    margin-bottom: 10px;
+    white-space: nowrap;
+}
+.bottom-option {
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    background-color: #0DBBBA;
+}
+.bottom-option:hover {
+    cursor: pointer;
+    background-color: #42C5B5;
+}
+
+.add-person {
+    border-width: 4px;
+    font-size: 203px;
+    color: #0DBBBA;
+    height: 200px;
+    margin-left: 15px;
+    text-align: center;
+}
+.add-person:hover {
+    cursor: pointer;
+    color: #fff;
+    background-color: #0DBBBA;
+}
+.img-responsive {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+.img-circle {
+    border-radius: 50%;
+}
+.hide-box,
+.temp-box {
+    display: none;
+}

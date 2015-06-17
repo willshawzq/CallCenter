@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui" />
+  <meta content="yes"name="apple-mobile-web-app-capable"/>
+  <meta content="black"name="apple-mobile-web-app-status-bar-style"/>
+  <meta name="format-detection"content="telphone=no"/>
+  <title>用户界面</title>
+  <!-- <link rel="stylesheet" href="http://www.w3cplus.com/mcommon/reset.css" media="all"> -->
+  <link rel="stylesheet" href="../stylesheets/customer_chat.css">
+  <style type="text/css">
+  	.msg-icon{
+	    display: inline-block;
+	    width: 24px;
+	    height: 24px;
+	    background: url(../images/sprite_msg_detail.png) no-repeat;
+	    background-size: 72px auto;
+	    vertical-align:middle;
+	}
+	.icon-voice{background-position:0px 0px;}
+	.icon-plus{background-position:-24px 0px;}
+	.icon-emoji{background-position:-48px 0px;}
+	.msg-input {
+		width: 72%;
+		display: inline-block;
+		vertical-align: middle;
+		height: 26px;
+	}
+  </style>
+</head>
+<body>
+  <header class="header">
+  	<h3 id="status"></h3>
+  </header>
+  
+  <div class="wrap-page">
+    <div class="page" id="historyMsg">
+    </div>
+  </div>
+  <footer class="footer">
+  	<div class="footer-option">
+		<i class="msg-icon icon-voice" id="recorder"></i>
+		<input type="text" class="msg-input" id="messageInput">
+	  	<i class="msg-icon icon-emoji" id="emoji"></i>
+		<i class="msg-icon icon-plus"><input id="sendImage" type="file" value="image"></i>
+	</div>
+	<div id="emojiWrapper"></div>
+	<div id="recorderWrapper" style="display: none">
+	    <audio controls autoplay style="display: none"></audio>
+	    <input id="startRecording" type="button" value="录音" />
+	    <input id="stopRecording" type="button" value="停止"/>
+	    <input id="playRecording" type="button" value="播放"/>
+	    <input id="emitAudio" type="button" value="提交" />
+	</div>
+
+	<div class="user-template hidden clearfix">
+        <div>
+            <img src="../images/header.jpeg">
+            <div class="user-message">
+                <span class="triangle-left"></span>
+                <span class="message-text"></span>
+            </div>
+        </div>
+    </div>
+    <div class="esq-template hidden clearfix">
+        <div>
+            <img src="../images/header.jpeg">
+            <div class="esq-message">
+                <span class="message-text"></span>
+                <span class="triangle-right"></span>
+            </div>
+        </div>
+    </div>
+  </footer>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="../plugins/jquery-2.1.3.min.js"></script>
+  <script src="../javascripts/HZRecorder.js"></script>
+  <script src="../javascripts/customer_chat.js"></script>
+  <script type="text/javascript">
+  $("#messageInput").on("focus", function(){
+
+  });
+  </script>
+</body>
+</html>

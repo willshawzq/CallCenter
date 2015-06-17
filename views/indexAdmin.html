@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title><%= title %></title>
+    <link href="../plugins/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="../stylesheets/index.css" rel="stylesheet">
+</head>
+<body>
+<label id="user-id" style="display:none"><%= user.kf_id%></label>
+<label id="user-type" style="display:none"><%= user.kf_type%></label>
+<label id="customer-max" style="display:none"><%= user.customer_max%></label>
+<div class="top-bar">
+    <div class="container">
+        <div class="title clearfix">
+            <span>客服管理系统</span>
+            <div>
+                <span><i class="icon-bell mr15"></i></span>
+                <span>你好,<label id="user-name"><%= user.kf_nick %></label></span>
+                <span onclick="javascript:location.href='/logout'"><i class="icon-signout ml15"></i></span>
+            </div>
+        </div>
+        <div class="nav" style="display: none">
+            <span name="item-chat" class="nav-item current"><i class="icon-group"></i>客服聊天<span class="triangle"></span></span>
+            <span name="item-user" class="nav-item"><i class="icon-user"></i>个人信息管理<span class="triangle"></span></span>
+            <span name="item-esq" class="nav-item"><i class="icon-group"></i>客服信息管理<span class="triangle"></span></span>
+            <span name="item-repository" class="nav-item"><i class="icon-exchange"></i>知识库维护<span class="triangle"></span></span>
+        </div>
+    </div>
+</div>
+<div class="content">
+    <div class="container calc-height">
+        <iframe id="iframe" src="../page/user_chat.html"></iframe>
+    </div>
+</div>
+<script src="../plugins/jquery-2.1.3.min.js"></script>
+<script src="../javascripts/indexAdmin.js"></script>
+</body>
+</html>
