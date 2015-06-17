@@ -10,28 +10,19 @@
   <!-- <link rel="stylesheet" href="http://www.w3cplus.com/mcommon/reset.css" media="all"> -->
   <link rel="stylesheet" href="../stylesheets/customer_chat.css">
   <style type="text/css">
-  	.msg-icon{
-	    display: inline-block;
-	    width: 24px;
-	    height: 24px;
-	    background: url(../images/sprite_msg_detail.png) no-repeat;
-	    background-size: 72px auto;
-	    vertical-align:middle;
-	}
-	.icon-voice{background-position:0px 0px;}
-	.icon-plus{background-position:-24px 0px;}
-	.icon-emoji{background-position:-48px 0px;}
-	.msg-input {
-		width: 72%;
-		display: inline-block;
-		vertical-align: middle;
-		height: 26px;
-	}
+  .msg-icon{ display: inline-block; width: 24px; height: 24px; background: url(../images/sprite_msg_detail.png) no-repeat;  background-size: 72px auto; vertical-align:middle;
+  }
+  .icon-voice{background-position:0px 0px;}
+  .icon-plus{background-position:-24px 0px;}
+  .icon-emoji{background-position:-48px 0px;}
+  .msg-input {width: 72%; display: inline-block; vertical-align: middle; height: 26px;}
+  .history-info {text-align: center;border-top:1px dashed gray;padding: 5px;margin-top: 10px;}
+  h4 {  margin-top: -46px;  text-align: right;  margin-right: 20px;}
   </style>
 </head>
 <body>
   <header class="header">
-  	<h3 id="status"></h3>
+  	<h3 id="status"></h3><h4 id="customer"></h4>
   </header>
   
   <div class="wrap-page">
@@ -65,7 +56,7 @@
     </div>
     <div class="esq-template hidden clearfix">
         <div>
-            <img src="../images/header.jpeg">
+            <img src="../images/customer.jpeg">
             <div class="esq-message">
                 <span class="message-text"></span>
                 <span class="triangle-right"></span>

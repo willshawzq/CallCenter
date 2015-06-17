@@ -1,0 +1,21 @@
+.person-info {  box-sizing: border-box; width: 850px; padding: 5px; margin: 0 auto; border: 1px solid #ddd; border-radius: 4px; background-color: #fff;}
+.person-info .profile, .person-info .password{  box-sizing: border-box; float: left; overflow: hidden; width: 50%; padding: 15px 5px;}
+.person-info .item {  margin-bottom: 20px; border: 1px solid #ddd;  border-top: 2px solid green;  padding: 15px 10px;  border-radius: 4px;}
+.person-info .title { border-bottom: 1px solid #ddd; padding:5px 4px;  margin-bottom: 10px; color: #354858; }
+.person-info .warning {  float: right;  font-size: 14px;  color: red; }
+.person-info .detail {   height: 60px;  line-height: 60px; }
+.person-info .img {   width: 60px;  height: 60px;  border-radius: 5px;  float: left;  border: 1px solid #ddd; }
+.person-info .change-img { float: right; line-height: 60px;}
+.person-info .cg-img { text-decoration: none; color: green;}
+.profile .option { float: right;}
+.password .option { float: right; height: 32px;  line-height: 32px;}
+.password .detail { height: auto; }
+.input {  width: 265px; border-width: 0;  border-bottom: 1px solid #ddd;  text-indent: .5em;  height: 2em;}
+.password .input { width: 385px; }
+.input:focus { outline: 1px solid green;}
+.btn { padding: 5px 10px; border-radius: 2px; color: #fff; cursor: pointer; background-color: #BEBED0; border: none; font-size: 14px; cursor: not-allowed;}
+.active .update { background-color: #33B332; cursor: pointer; }
+.active .cancel { color: #33B332; cursor: pointer;}
+.cancel { background-color: transparent; color: #BEBED0; }
+.clearfix:after { display: block; content: "\0020"; clear: both; }
+input[type="file"] { width: 64px; margin-left: -72px; opacity: 0; }

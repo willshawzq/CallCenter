@@ -1,0 +1,33 @@
+<div class="clearfix esq-template-added">
+        <div>
+            <img src="../images/customer.jpeg">
+            <div class="esq-message">
+                <span class="message-text">你好</span>
+                <span class="triangle-right"></span>
+            </div>
+        </div>
+    </div><div class="clearfix esq-template-added">
+        <div>
+            <img src="../images/customer.jpeg">
+            <div class="esq-message">
+                <span class="message-text"><img class="image" src="/upload/chatImg_upload/upload_8071ea9f702e5a1aa5d18b6bf05fc17e.jpg"></span>
+                <span class="triangle-right"></span>
+            </div>
+        </div>
+    </div><div class="clearfix esq-template-added">
+        <div>
+            <img src="../images/customer.jpeg">
+            <div class="esq-message">
+                <span class="message-text"><img class="emoji" src="../images/emoji/65.gif"></span>
+                <span class="triangle-right"></span>
+            </div>
+        </div>
+    </div><div class="clearfix user-template-added">
+        <div>
+            <img src="../images/header.jpeg">
+            <div class="user-message">
+                <span class="triangle-left"></span>
+                <span class="message-text">您好</span>
+            </div>
+        </div>
+    </div>

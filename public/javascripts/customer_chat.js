@@ -9,14 +9,15 @@ HiChat.prototype = {
     init: function() {
         var that = this;
         this.socket = io.connect();
-        var customer_id = "kf1_room"+Math.round(3*(Math.random())+1);
-        alert("customer_id:"+customer_id);
+        var kf_id;
+        var customer_id = that._randomString(6);
+        $("#customer").text(customer_id);
+        //alert("customer_id:"+customer_id);
         this.socket.on('connect', function (socket) {
-            console.log(this.socket);
             //用户连接到服务器，请求客服。
             that.socket.emit('customer_connect',{
                 customer_id : customer_id
-            }, function (data, kefu_name, kefu_id, msg){
+            }, function (data, kefu_name, kefu_id, msg, recordPath){
                 if (data === 'success') {
                     //用户成功接入客服，在客服的socket中记录对应客服的socket信息，方便后面对应制定客服发信息
                     that.socket.name = {
@@ -27,9 +28,22 @@ HiChat.prototype = {
                         name : kefu_name,
                         id : kefu_id
                     }
+                    kf_id = kefu_id;
                     console.log(that.socket);
                     //可以对指定的客服发送信息
                     that._setStatus("success", msg);
+                    console.log(recordPath);
+                    if(recordPath != ' ') {
+                        $.ajax({
+                            url: recordPath,
+                            dataType: "html",
+                            type: "get",
+                            complete: function(data){
+                              $("#historyMsg").html(data.responseText)
+                                    .append("<div class='history-info'>以上是历史消息</div>")
+                            }
+                        });
+                    }
                     //that._displayNewMsg(kefu_name, msg);
                 }else if (data === 'busy') {
                     //用户聊天界面为灰，不能发送信息，提示客服忙，等待接入
@@ -41,7 +55,7 @@ HiChat.prototype = {
                     that._setStatus("failed", "无法连接客服");
                 }
             });
-        });
+         });
         this.socket.on("message_from_kefu", function (data) {
             if(data.dataType === "audio"){
                 that._displayAudioUser(data.from, data.message);
@@ -51,15 +65,38 @@ HiChat.prototype = {
         });
         this.socket.on("user_disconnected", function (kefu_id){
              //提示用户下线，暂时无法进行聊天，但是上面的聊天记录不会被遮罩，还是可以看到之前的聊天记录的
-             console.log(kefu_id + "以下线。")
+            var str = $("#historyMsg").find(".history-info").remove().end().html();
+            str = $.trim(str);
+            if(!str) return;
+            $.post("/chat_record",{
+                record: str,
+                customer_id: customer_id,
+                kf_id: kf_id
+            },function(status){
+                //if(status !== 'success') {}
+            });
+             console.log(kefu_id + "已下线。")
         });
+        this.socket.on("disconnect", function () {
+            debugger;
+            alert("dd");
+        })
         this.socket.on('reconnect',function(){
         });
 
         this._initialEmoji();
         this._addBtnClick();
     },
-
+    _randomString: function(len) {
+    　　len = len || 32;
+    　　var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';    /****默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1****/
+    　　var maxPos = $chars.length;
+    　　var pwd = '';
+    　　for (i = 0; i < len; i++) {
+    　　　　pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
+    　　}
+    　　return pwd;
+    },
     _initialEmoji: function() {
         var emojiContainer = document.getElementById('emojiWrapper'),
             docFragment = document.createDocumentFragment();
@@ -125,7 +162,7 @@ HiChat.prototype = {
             if (this.files.length != 0) {
                 var file = this.files[0],
                     reader = new FileReader();
-                if (!reader) {
+                /*if (!reader) {
                     this.value = '';
                     return;
                 };
@@ -134,7 +171,25 @@ HiChat.prototype = {
                     var msg = "<img class='image' src='" + e.target.result + "' >";
                     that._emitMessage({msg: msg, dataType: "img"});
                 };
-                reader.readAsDataURL(file);
+                reader.readAsDataURL(file);*/
+                that.uploadImg({
+                    file: file,
+                    url: "/chat_img"
+                }, function(status, imgPath){
+                    if (status !== 'error') {
+                        console.log('imgPath');
+                        console.log(imgPath);
+                        if(imgPath === 'error') {
+                            //前端提示图片发送失败，不发送事件，也不展示图片
+                            var msg = "图片发送失败";
+                        }else {
+                            var msg = "<img class='image' src='" + imgPath+ "' >";
+                        }
+                        that._emitMessage({msg: msg, type: "img"});
+                    }else {
+                        that._emitMessage('图片发送失败');
+                    }
+                });
             };
         }, false);
         document.getElementById('emoji').addEventListener('click', function(e) {
@@ -162,6 +217,35 @@ HiChat.prototype = {
                 that._emitMessage({msg: '[emoji:' + target.title + ']', type: "emoji"});
             };
         }, false);
+    },
+    uploadImg: function(data, callback) {
+        var fd = new FormData();
+        fd.append("imgData", data.file);
+        $.ajax({
+            url : data.url,
+            type : 'POST',
+            data : fd,
+            dataType: "text",
+            /**
+             * 必须false才会避开jQuery对 formdata 的默认处理
+             * XMLHttpRequest会对 formdata 进行正确的处理
+             */
+            processData : false,
+            /**
+             *必须false才会自动加上正确的Content-Type
+             */
+            contentType : false,
+            success : function(responseStr) {
+                //alert("成功：" + JSON.stringify(responseStr));
+                console.log("success:"+ responseStr);
+                callback('success', responseStr);
+            },
+            error : function(responseStr) {
+               // alert("失败:" + JSON.stringify(responseStr));//将json对象转成json字符串。
+                console.log("error:",responseStr);
+                callback('error', responseStr);
+            }
+        });
     },
     _emitMessage: function(data) {
         if (data.msg.trim().length != 0) {
@@ -291,7 +375,7 @@ HiChat.prototype = {
         if (typeof history.pushState == "function") {
             var xhr = new XMLHttpRequest();
             var path = path.split("\\")[2];
-            xhr.open("get", "/audioData_upload/"+path, true);
+            xhr.open("get", "/upload/audioData_upload/"+path, true);
             xhr.responseType = "blob";
             xhr.onload = function() {
                 if (this.status == 200) {

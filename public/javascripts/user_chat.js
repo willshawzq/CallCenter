@@ -20,12 +20,14 @@ $(function() {
             var online = data.online_kefus;
             //第一次上线，页面上刷新目前在线客服列表
             $.get("/manage",function(data){
+                var $esq = $($(".chat-users")[1]);
                 for(var i=0,len=data.length;i<len;i++){
                     if(data[i]["kf_id"] != kefu_id){
                         addChat("user", data[i]["kf_id"], data[i]["kf_nick"]);
+                        var $lis = $esq.find(".user-icon");
+                        $($lis[$lis.length-1]).attr("src", "../images/header"+i+".jpeg");
                     }
                 }
-
                 for(var o in online){
                     kfOnlineStatus(o, "online");
                 }
@@ -44,6 +46,7 @@ $(function() {
     /*用户下线*/
     socket.on('customer_disconnected', function(customer_id){
         console.log("customer_disconnected:"+customer_id);
+        saveChatRecord(customer_id, kefu_id);
         removeChat("customer", customer_id);
     });
 
@@ -63,9 +66,6 @@ $(function() {
     });
     /*监听来自用户的信息*/
     socket.on('message_from_users', function(data) {
-        console.log(data);
-        console.log(JSON.stringify(data));
-        console.log(data.dataType);
         if(data.dataType === "audio"){
             receiveAudio(data.message, data.from);
         }else {
@@ -160,7 +160,7 @@ $(".send-images input").on("change", function(){
     if (this.files.length != 0) {
         var file = this.files[0],
             reader = new FileReader();
-        if (!reader) {
+        /*if (!reader) {
             //that._displayNewMsg('system', '!your browser doesn\'t support fileReader'//
             this.value = '';
             return;
@@ -170,7 +170,25 @@ $(".send-images input").on("change", function(){
             var msg = "<img class='image' src='" + e.target.result + "' >";
             showInputMessage(msg);
         };
-        reader.readAsDataURL(file);
+        reader.readAsDataURL(file);*/
+        uploadImg({
+            file: file,
+            url: "/chat_img"
+        }, function(status, imgPath){
+            if (status !== 'error') {
+                console.log('imgPath');
+                console.log(imgPath);
+                if(imgPath === 'error') {
+                    //前端提示图片发送失败，不发送事件，也不展示图片
+                    var msg = "图片发送失败";
+                }else {
+                    var msg = "<img class='image' src='" + imgPath+ "' >";
+                }
+                showInputMessage(msg);
+            }else {
+                showInputMessage('图片发送失败');
+            }
+        });
     };
 });
 
@@ -195,8 +213,6 @@ $("#emitAudio").on("click", function(){
     var blob = recorder.getBlob();
     recorder.upload("/audioData_upload", function (state, obj) {
         if(state === "success"){
-            //that.socket.emit('newRecorder', obj.filePath);
-            //that._emitMessage({msg: obj.filePath, type: "audio"});
             showAudioInput();
         }else {
             alert("error");
@@ -204,11 +220,22 @@ $("#emitAudio").on("click", function(){
     });
 });
 
+function saveChatRecord(customer_id, kf_id) {
+    var str = $("#"+customer_id).find(".history-info").remove().end().html();
+    str = $.trim(str);
+    if(!str) return;
+    $.post("/chat_record",{
+        record: str,
+        customer_id: customer_id,
+        kf_id: kf_id
+    },function(status){
+        //if(status !== 'success') {}
+    });
+}
+
 function kfOnlineStatus(id, type){
     var list = $(".chat-users ul")[1];
     var $item = $(list).find("li[name='"+id+"']");
-    console.log("------------------------------");
-    console.log($item);
     if(type == "online"){
         $item.removeClass("offline-status").addClass("online-status");
     }else {
@@ -219,7 +246,7 @@ function kfOnlineStatus(id, type){
 function showInputMessage(text) {
     var template = null;
     var customer_id = $(".item-current").attr("id");
-
+    text = $.trim(text);
     if(!text) return;
     if(!customer_id) return;
 
@@ -350,8 +377,8 @@ function playAudio(audio, path) {
     window.URL = window.URL || window.webkitURL;
     if (typeof history.pushState == "function") {
         var xhr = new XMLHttpRequest();
-        var path = path.split("\\")[2];
-        xhr.open("get", "/audioData_upload/"+path, true);
+        var path = path.split("/").pop();
+        xhr.open("get", "/upload/audioData_upload/"+path, true);
         xhr.responseType = "blob";
         xhr.onload = function() {
             if (this.status == 200) {
@@ -448,4 +475,34 @@ function getTime(){
     var hour = date.getHours();
     var minute = date.getMinutes();
     return hour + ":" + minute;
+}
+
+function uploadImg(data, callback) {
+    var fd = new FormData();
+    fd.append("imgData", data.file);
+    $.ajax({
+        url : data.url,
+        type : 'POST',
+        data : fd,
+        dataType: "text",
+        /**
+         * 必须false才会避开jQuery对 formdata 的默认处理
+         * XMLHttpRequest会对 formdata 进行正确的处理
+         */
+        processData : false,
+        /**
+         *必须false才会自动加上正确的Content-Type
+         */
+        contentType : false,
+        success : function(responseStr) {
+                //alert("成功：" + JSON.stringify(responseStr));
+                console.log("success:"+ responseStr);
+                callback('success', responseStr);
+            },
+            error : function(responseStr) {
+               // alert("失败:" + JSON.stringify(responseStr));//将json对象转成json字符串。
+                console.log("error:",responseStr);
+                callback('error', responseStr);
+            }
+    });
 }

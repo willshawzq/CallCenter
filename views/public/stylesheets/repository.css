@@ -1,0 +1,138 @@
+html, body {
+    background-color: inherit;
+}
+.clearfix:after {
+    display: block;
+    content: "\0020";
+    clear: both;
+}
+.info-box{
+    display: inline-block;
+    margin-left: 2%;
+    margin-top: 10px;
+    width: 22.5%;
+    background-color: #fff;
+    border: 1px solid #0DBBBA;
+}
+.temp-box {
+    display: none;
+}
+.top-option {
+    width: 100%;
+    border-top: 2px solid #0DBBBA;
+}
+.top-option .title {
+      position: relative;
+      float: left;
+      width: 60px;
+      color: #fff;
+      padding: 5px 10px;
+      background-color: #0DBBBA;
+}
+.top-option .title input {
+    height: 1em;
+    width: 100%;
+    color: #fff;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    background-color: #0DBBBA;
+}
+.top-option .title:after {
+    position: absolute;
+    display: inline-block;
+    content: "\0020";
+    width: 0;
+    height: 0;
+    top: 0;
+    right: -30px;
+    border-top: 28px solid #0DBBBA;
+    border-right: 30px solid transparent;
+}
+.top-option .add {
+    float: right;
+    padding: 5px 10px;
+    color: #fff;
+    background-color: #0DBBBA;
+}
+.top-option .add:hover {
+    cursor: pointer;
+    background-color: #42C5B5;
+}
+.info-detail img {
+    float: left;
+    width: 40%;
+    padding: 0 10px;
+    margin: 10px 0;
+}
+.details {
+    float: left;
+    padding: 20px;
+}
+.details div {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+.details div:first-child {
+    font-size: 20px;
+}
+.bottom-option {
+    color: #fff;
+    text-align: center;
+    height: 35px;
+    line-height: 35px;
+    background-color: #0DBBBA;
+}
+.bottom-option .left,
+.bottom-option .right {
+    float: left;
+    display: inline-block;
+    width: 50%;
+    height: 100%;
+    text-align: center;
+}
+.bottom-option .left:hover,
+.bottom-option .right:hover {
+    cursor: pointer;
+    background-color: #42C5B5;
+}
+
+.word {
+    padding: 2%;
+}
+.word .title {
+    color: #fff;
+    text-align: right;
+    border-bottom: 1px solid #0DBBBA;
+}
+.word .title span {
+    display: inline-block;
+    padding: 5px 10px 5px 10px;
+    background-color: #0DBBBA;
+}
+.word .content {
+    color: #AAAAAA;
+    height: 200px;
+    border: 1px solid #0DBBBA;
+    border-top-width: 0;
+}
+.word .content textarea {
+    width: 98%;
+    height: 98%;
+    border: none;
+    resize: none;
+    outline: none;
+}
+
+.add-box {
+    text-align: center;
+    height: 300px;
+    line-height: 300px;
+    font-size: 140px;
+    color: #0DBBBA;
+    border: 3px solid #0DBBBA;
+}
+.add-box:hover {
+    color: #fff;
+    background-color: #0DBBBA;
+}

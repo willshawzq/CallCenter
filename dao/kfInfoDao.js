@@ -3,6 +3,8 @@ var crypto = require('crypto');
 var mongoose = require('mongoose');
 var db = require('./getConnect');
 var Schema = mongoose.Schema;
+var md5;
+
 //kfInfoScheme结构
 var kfInfoScheme = new Schema({
     kf_acount : String,
@@ -34,10 +36,11 @@ var kfInfoScheme = new Schema({
 var KefuModel = mongoose.model('kfInfo', kfInfoScheme);
 
 //创建Kefu实例
-var Kefu =new KefuModel()
+var Kefu = new KefuModel()
+
 //增加客服人员(基于实例entity的操作)
 exports.add_e = function(kefu, callback) {
-    var md5 = crypto.createHash('md5');
+    md5 = crypto.createHash('md5');
     Kefu.password = md5.update(Kefu.password).digest('base64');
     Kefu.kf_acount = kefu.kf_acount;
     Kefu.kf_id = kefu.kf_id;
@@ -48,7 +51,7 @@ exports.add_e = function(kefu, callback) {
             util.log("FATAL" + err);
             callback(err);
         } else {
-            util.log('save ok');
+            util.log('kefu save ok');
             callback(null);
         }
     });
@@ -64,7 +67,7 @@ exports.add = function(kefu, callback) {
             util.log("FATAL" + err);
             callback(err);
         } else {
-            util.log('save ok');
+            util.log('kefu save ok');
             callback(null);
         }
     });
@@ -80,7 +83,7 @@ exports.delete = function(id, callback) {
             util.log(util.inspect(kefu));
             console.log(kefu);
             kefu.remove();
-            util.log('save ok');
+            util.log('kefu delete ok');
             callback(null);
         }
     });
@@ -92,7 +95,7 @@ exports.update_online_state = function (_id, online_state, callback) {
             util.log("FATAL" + err);
             callback(err);
         }else {
-            util.log('update ok');
+            util.log('kefu  update ok');
             callback(null);
         }
     });
@@ -110,7 +113,7 @@ exports.edit_kfnick = function(id, kf_nick, callback) {
                     util.log('FATAL '+ err);
                     callback(err);
                 } else {
-                    util.log('update ok');
+                    util.log('edit_kfnick  ok');
                     callback(null, kefu);
                 }
             });
@@ -119,19 +122,21 @@ exports.edit_kfnick = function(id, kf_nick, callback) {
 }
 
 //修改密码
-exports.edit_kfPassW = function(id, password_old, password_new, callback) {
+exports.edit_kfPass = function(id, password_old, password_new, callback) {
+    md5 = crypto.createHash('md5');
     findBykefu_Id(id, function(err, kefu) {
         if (err)
             callback(err);
         else {
             if (kefu.password === md5.update(password_old).digest('base64')) {
+                md5 = crypto.createHash('md5');
                 kefu.password = md5.update(password_new).digest('base64');
                 kefu.save(function(err) {
                     if (err) {
                         util.log('FATAL '+ err);
                         callback(err);
                     } else {
-                        util.log('update ok');
+                        util.log('edit_kfPassW  ok');
                         callback(null, kefu);
                     }
                 });
@@ -139,6 +144,26 @@ exports.edit_kfPassW = function(id, password_old, password_new, callback) {
                 util.log('old password wrong');
                 callback('old password wrong');
             }
+        }
+    });
+}
+
+//修改昵称
+exports.edit_kfimg = function(id, kf_img, callback) {
+    findBykefu_Id(id, function(err, kefu) {
+        if (err)
+            callback(err);
+        else {
+            kefu.kf_img = kf_img;
+            kefu.save(function(err) {
+                if (err) {
+                    util.log('FATAL '+ err);
+                    callback(err);
+                } else {
+                    util.log('edit_kfimg  ok');
+                    callback(null, kefu);
+                }
+            });
         }
     });
 }
@@ -164,7 +189,7 @@ var findById = exports.findById = function(id, callback) {
 };
 
 var findBykefu_Id = exports.findBykefu_Id = function(id, callback) {
-    KefuModel.findOne({kf_id: id}, function(err, kefu) {
+    KefuModel.findOne({kf_id: id}, function (err, kefu) {
         if (err) {
             util.log('FATAL ' + err);
             callback(err, null);

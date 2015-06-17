@@ -1,0 +1,242 @@
+html, body {
+    margin: 0;
+    background-color: #efefef;
+    font-family: sans-serif;
+}
+.wrapper {
+    width: 500px;
+    height: 640px;
+    padding: 5px;
+    margin: 0 auto;
+    background-color: #ddd;
+}
+.header,.footer,.wrap-page{
+  position:absolute;
+  left:0;
+  right:0;
+}
+.header,.footer{
+  height:auto;
+  text-align: left;
+  z-index:900;
+  line-height:44px;
+}
+.header{
+  top: 0;
+  height: 50px;
+  color: #fff;
+  text-align: center;
+  background: #0078E7;
+  border-bottom: 1px solid #0078E7;
+}
+.header h3 {
+  margin: 0;
+  height: 50px;
+  line-height: 50px;
+}
+.footer{
+  bottom: 0;
+  height: auto;
+  min-height: 50px;
+  text-align: center;
+  background-color: #EBECEE;
+}
+.wrap-page{
+  top: 50px;
+  bottom: 50px;
+  overflow-y:auto;
+  background-color: #fff;
+  -webkit-overflow-scrolling:touch;
+}
+.page{
+  padding: 10px;
+}
+#status {
+    font-size: 14px;
+    font-weight: normal;
+}
+#loginWrapper {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(5, 5, 5, .6);
+    text-align: center;
+    color: #fff;
+    display: block;
+    padding-top: 200px;
+}
+#nickWrapper {
+    display: none;
+}
+.banner {
+    height: 80px;
+    width: 100%;
+}
+.banner p {
+    float: left;
+    display: inline-block;
+}
+.controls {
+    height: 100px;
+    margin: 5px 0px;
+    position: relative;
+}
+#historyMsg {
+    height: 99%;
+    overflow: auto;
+    padding: 2px;
+    background: -webkit-linear-gradient(top,#ace7ef,#e7d9c5);
+    background: -moz-linear-gradient(top,#ace7ef,#e7d9c5);
+    background: linear-gradient(top,#ace7ef,#e7d9c5);
+}
+.timespan {
+    color: #ddd;
+}
+.items {
+    height: 30px;
+    line-height: 30px;
+    margin-bottom: 5px;
+}
+#colorStyle {
+    width: 50px;
+    border: none;
+    padding: 0;
+}
+/*custom the file input*/
+
+.imageLable {
+    position: relative;
+}
+#sendImage {
+    width: 24px;
+    opacity: 0;
+    overflow: hidden;
+}
+/*end custom file input*/
+
+#sendBtn {
+    float: right;
+    width: 50px;
+    height: 26px;
+    margin-right: 20px;
+}
+#emojiWrapper {
+    display: none;
+    width: 100%;
+    background-color: #EBECEE;
+    box-shadow: 0 0 10px #555;
+}
+#emojiWrapper img {
+    margin: 2px;
+    padding: 2px;
+    width: 25px;
+    height: 25px;
+}
+#emojiWrapper img:hover {
+    background-color: blue;
+}
+.emoji{
+    display: inline;
+}
+
+
+/*聊天气泡*/
+.esq-template,
+.esq-template-added {
+    text-align: right;
+}
+.esq-template > div,
+.esq-template-added > div {
+    display: inline-block;
+    margin-top: 5px;
+    margin-right: 10px;
+    font-size: 14px;
+}
+.esq-template > div > img,
+.esq-template-added > div > img {
+    height: 35px;
+    border-radius: 50%;
+}
+.esq-template .esq-message,
+.esq-template-added .esq-message {
+    position: relative;
+    float: left;
+    padding: 10px;
+    max-width: 300px;
+    margin-right: 10px;
+    border-radius: 4px;
+    background-color: #B4EB7C;
+}
+.esq-message .triangle-right,
+.esq-template-added .triangle-right {
+    position: absolute;
+    top: 14px;
+    right: -10px;
+}
+
+.user-template,
+.user-template-added {
+    text-align: left;
+    margin-top: 5px;
+    margin-right: 10px;
+    font-size: 14px;
+}
+.user-template > div,
+.user-template-added > div {
+    display: inline-block;
+    margin-top: 5px;
+    margin-right: 10px;
+    font-size: 14px;
+}
+.user-template > div > img,
+.user-template-added > div > img {
+    float: left;
+    height: 35px;
+    border-radius: 50%;
+}
+.user-template .user-message,
+.user-template-added .user-message {
+    position: relative;
+    float: left;
+    max-width: 300px;
+    padding: 10px;
+    margin-left: 10px;
+    border-radius: 4px;
+    background-color: #B4EB7C;
+}
+.user-template .triangle-left,
+.user-template-added .triangle-left {
+    position: absolute;
+    top: 14px;
+    left: -10px;
+}
+.hidden,
+.user-list-template {
+    display: none;
+}
+.triangle-left {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    border-right: 10px solid #B4EB7C;
+}
+.triangle-right {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    border-left: 10px solid #B4EB7C;
+}
+.emoji{
+    display: inline;
+    margin: -5px -5px -7px -5px;
+}
+.image {
+    width: 150px;
+    height: 200px;
+}

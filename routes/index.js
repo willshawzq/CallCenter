@@ -1,7 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var crypto = require('crypto');
-var db = require('../dao/kfInfoDao');
+var kfInfo = require('../dao/kfInfoDao');
+var url = require('url');
+var path = require('path');
 
 var querystring = require("querystring"),
     fs = require("fs"),
@@ -39,7 +41,7 @@ router.route('/login')
         }else {
             var md5 = crypto.createHash('md5');
             var password = md5.update(req.body.password).digest('base64');
-            db.findBykefu_Id(req.body.username, function (err, user) {
+            kfInfo.findBykefu_Id(req.body.username, function (err, user) {
                 if (err) {
                     return next(err);
                 }
@@ -91,7 +93,7 @@ router.get('/chat/:userType', function (req, res, next) {
 });
 
 router.get("/manage", function (req, res, next){
-    db.allKefus(function (err, kefus) {
+    kfInfo.allKefus(function (err, kefus) {
         if(err) {
             return next(err);
         }
@@ -99,11 +101,21 @@ router.get("/manage", function (req, res, next){
     });
 });
 
-router.post("/delete", function (req, res, next){
+router.get("/infoManage", function (req, res, next){
+    var params = url.parse(req.url, true).query;
+    kfInfo.findBykefu_Id(params.kf_id, function (err, kefu) {
+        if(err) {
+            return next(err);
+        }
+        res.send(kefu);
+    });
+});
+
+router.post("/delete_kefu", function (req, res, next){
     if(!req.body.kefu_id) {
         return res.send("error");
     }
-    db.delete(req.body.kefu_id, function (err) {
+    kfInfo.delete(req.body.kefu_id, function (err) {
         if (err) {
             res.send(err);
             return next(err)
@@ -112,12 +124,12 @@ router.post("/delete", function (req, res, next){
     });
 });
 
-router.post("/add", function (req, res, next){
+router.post("/add_kefu", function (req, res, next){
     if (!req.body) {
         res.send(err);
         next(err);
     }
-    db.findBykefu_Id(req.body.kefu_id, function (err, kefu) {
+    kfInfo.findBykefu_Id(req.body.kefu_id, function (err, kefu) {
         if (err) {
             res.send(err);
             next(err);
@@ -133,7 +145,7 @@ router.post("/add", function (req, res, next){
                 };
                 console.log('kefu');
                 console.log(kefu);
-                db.add_e (kefu, function (err) {
+                kfInfo.add_e (kefu, function (err) {
                     if (err) {
                         console.log('add_err');
                         console.log(err);
@@ -145,38 +157,139 @@ router.post("/add", function (req, res, next){
         }
     });
 });
+router.post("/chat_record", function(req, res, next){
+    console.log('chat_record');
+    var data = req.body;
+    var files_uploadDir = "public/upload/chatRecord_upload/";
+    var files_path = data.kf_id + "/" + data.customer_id + "/";
+    _mkdirsSync(files_uploadDir ,[data.kf_id, data.customer_id]);
+    var date =  new Date().getTime() ;
+    console.log(date);
+    str = date + ".txt";
+    files_upload_path = path.join(files_uploadDir, files_path , str );
+    console.log('files_upload_path');
+    console.log(files_uploadDir);
+    console.log(files_upload_path);
 
-router.post("/update", function (req, res, next){
-    console.log("request 'update' was called.");
-    var body = req.body;
-    var path ="./public/images/kfImg/"+body.kf_id;
+    try{
+        fs.writeFile(files_upload_path, data.record, "utf8");
+    }catch(e) {
+        console.log(e);
+        return res.send('error');
+    }
+    res.send("success");
 
-    fs.writeFileSync(path, body.img);
-    res.send({state: "success"});
-    /*var form = new formidable.IncomingForm();
-    form.uploadDir = "./public/images/kfImg";
-    form.parse(req, function(error, fields, files) {
-        //console.log("parsing done");
-        //console.log(files);
-        console.log("F.U.P: " + JSON.stringify(files));
-        console.log("F.U.P: " + JSON.stringify(fields));
+    function _mkdirsSync(dir, list) {
+        var childPath = dir;
+        list.forEach(function(e){
+            childPath = path.join(childPath, e);
+            console.log(childPath);
+            if (!fs.existsSync(childPath)) {
+                var tep = fs.mkdirSync(childPath);
+                console.log('Common目录创建成功');
+            }
+        });
+    }
+});
 
-    });*/
-
+router.post("/chat_img", function(req, res, next){
+    var form = new formidable.IncomingForm(),
+        files_upload_path, img_name, new_path;
+    form.uploadDir = "public/upload/chatImg_upload/";
+    form.parse(req, function(error, fields, files){
+        files_upload_path = files.imgData.path;
+        temp = (files.imgData.name).split(".");
+        img_type = temp.pop();
+        img_path = files_upload_path+"."+img_type;
+        console.log(img_path);
+        try{
+            fs.renameSync(files.imgData.path, img_path);
+        }catch(e) {
+            console.log(e);
+            return res.send('error');
+        }
+        var imgPath = '/',
+            pathtmp = img_path.split(path.sep);
+        pathtmp.shift();
+        pathtmp.forEach(function(e){
+            imgPath = path.join(imgPath, e);
+        });
+        console.log(imgPath);
+        res.send(imgPath);
+    });
 });
 
 router.post('/audioData_upload', function (req, res, next) {
-    console.log("request 'upload' was called.");
+    console.log("request 'audioData_upload' was called.");
     var form = new formidable.IncomingForm();
-    form.uploadDir = "./public/audioData_upload";
-
+    form.uploadDir = "./public/upload/audioData_upload";
     form.parse(req, function(error, fields, files) {
         files_upload_path = files.audioData.path;
+        files_upload_path += ”.wav“;
         console.log('files.upload.path');
         console.log(files);
+        try{
+            fs.renameSync(files.audioData.path, );
+        }catch(e) {
+            console.log(e);
+            return res.send('error');
+        }
         var obj = {filePath: files_upload_path};
         res.send(obj);
+    });
+});
 
+router.post("/edit_kfImg", function (req, res, next){
+    var form = new formidable.IncomingForm();
+    var files_upload_path, img_type, temp, new_path;
+    form.uploadDir = "public/upload/img_upload/";
+    form.parse(req, function(error, fields, files) {
+        files_upload_path = files.imgData.path;
+        temp = (files.imgData.name).split(".");
+        img_type = temp.pop();
+        imgUrl = fields.kf_id+"."+img_type;
+        new_path =form.uploadDir + imgUrl;
+        try{
+            fs.renameSync(files.imgData.path, new_path)
+        }catch(e) {
+            console.log(e);
+            return res.send(e);
+        }
+        console.log('edit_kfimg');
+        kfInfo.edit_kfimg(fields.kf_id, imgUrl, function (err) {
+            if (err) {
+                res.send(err);
+                return next(err)
+            }
+            res.send("success");
+        });
+    });
+});
+
+router.post("/edit_kfNick", function (req, res, next){
+    if(!req.body.kf_id) {
+        return res.send("error");
+    }
+    kfInfo.edit_kfnick(req.body.kf_id, req.body.kf_nick, function (err) {
+        if (err) {
+            res.send(err);
+            return next(err)
+        }
+        res.send("success");
+    });
+});
+
+router.post("/edit_kfPass", function (req, res, next){
+    if(!req.body.kf_id) {
+        return res.send("error");
+    }
+    kfInfo.edit_kfPass(req.body.kf_id, req.body.old_pw, req.body.new_pw, function (err) {
+        if (err) {
+            console.log(err);
+            res.send(err);
+            return next(err)
+        }
+        res.send("success");
     });
 });
 

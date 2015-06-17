@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title><%= title %></title>
+        <link href="../plugins/font-awesome/css/font-awesome.css" rel="stylesheet">
+        <link href="../stylesheets/user_chat.css" rel="stylesheet">
+    </head>
+    <body>
+        <div class="index-content">
+            <div class="container clearfix">
+                <div class="chat-frame clearfix">
+                    <div class="chat-list">
+                        <div class="chat-user-img"><img src="../images/header.jpeg"></div>
+                        <div data-role="customer" class="chat-role-btn current-role"><i class="icon-user"></i></div>
+                        <div data-role="esq" class="chat-role-btn"><i class="icon-group"></i></div>
+                    </div>
+                    <div class="chat-users" data-role="customers">
+                        <div class="customers-title">
+                            接入用户列表
+                        </div>
+                        <ul>
+                            <li class="user-list-template">
+                                <div class="user-item clearfix">
+                                    <img src="../images/header.jpeg" class="user-icon">
+                                    <span class="unread-msg">0</span>
+                                    <div class="user-name">
+                                        <span class="user-nick"></span>
+                                        <span class="update-time"></span>
+                                    </div>
+                                    <div class="user-info"></div>
+                                </div>
+                            </li>
+                        </ul>
+
+                    </div>
+
+                    <div class="chat-users hidden" data-role="esqs">
+                        <div class="users-title">
+                            客服列表
+                        </div>
+                        <ul>
+                            <li class="user-list-template offline-status">
+                                <div class="user-item clearfix">
+                                    <img src="../images/header.jpeg" class="user-icon">
+                                    <span class="unread-msg">0</span>
+                                    <div class="user-name">
+                                        <span class="user-nick"></span>
+                                        <span class="update-time"></span>
+                                    </div>
+                                    <div class="user-info"></div>
+                                </div>
+                            </li>
+                        </ul>
+
+                    </div>
+                    <div class="chat-widow">
+                        <div class="chat-name"></div>
+                        <div class="chat-content">
+                            <div class="content-item-template clearfix"></div>
+                            <div class="user-template hidden clearfix">
+                                <div>
+                                    <img src="../images/header.jpeg">
+                                    <div class="user-message">
+                                        <span class="triangle-left"></span>
+                                        <span class="message-text"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="esq-template hidden clearfix">
+                                <div>
+                                    <img src="../images/header.jpeg">
+                                    <div class="esq-message">
+                                        <span class="message-text"></span>
+                                        <span class="triangle-right"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chat-options">
+                            <div class="chat-options-bar clearfix">
+                                <div class="send-icons mt-13">
+                                    <button type="text" value="表情"><i class="fz20">☺</i></button>
+                                    <div class="emoji-container"></div>
+                                </div>
+                                <div class="send-images">
+                                    <button type="text" value="图片"><i class="icon-picture"></i></button>
+                                    <input type="file">
+                                </div>
+                                <div class="clear-scream">
+                                    <button type="text" value="清屏"><i class="icon-ban-circle"></i></button>
+                                </div>
+                                <div class="send-audio clearfix">
+                                    <audio controls autoplay></audio>
+                                    <input id="startRecording" type="button" value="录音" />
+                                    <input id="stopRecording" type="button" value="停止" />
+                                    <input id="playRecording" type="button" value="播放" />
+                                    <input id="emitAudio" type="button" value="提交" />
+                                </div>
+                            </div>
+                            <div class="chat-options-input-box">
+                                <textarea class="chat-options-input"></textarea>
+                            </div>
+                            <div class="chat-options-button"><input type="button" value="发送"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="../plugins/jquery-2.1.3.min.js"></script>
+        <script src="../javascripts/HZRecorder.js"></script>
+        <script src="../javascripts/user_chat.js"></script>
+    </body>
+</html>
